@@ -1,0 +1,53 @@
+Checks: '-*,clang-diagnostic-*,-clang-diagnostic-doxygen-*'
+
+# Configure C++ language options
+Language: Cpp
+
+# Based on Google style guide
+# Adjusted for clang-format style
+Checks: '-*,google-*'
+CheckOptions:
+  - key: google-build-explicit-make-pair
+    value: 'true'
+
+# Configure C++ specific options
+---
+Checks: '-*,cppcoreguidelines-*'
+CheckOptions:
+  - key: cppcoreguidelines-avoid-magic-numbers.WarnOnIncludes
+    value: 'true'
+
+# Configure Clang format style options
+Checks: '-*,readability-identifier-naming'
+CheckOptions:
+  - key: readability-identifier-naming.NamespaceCase
+    value: 'NS_Case'
+  - key: readability-identifier-naming.ClassCase
+    value: 'UPPER_CASE'
+  - key: readability-identifier-naming.StructCase
+    value: 'UPPER_CASE'
+  - key: readability-identifier-naming.EnumCase
+    value: 'UPPER_CASE'
+
+# Additional options based on provided clang-format settings
+CheckOptions:
+  - key: google-build-explicit-make-pair
+    value: 'true'
+  - key: clang-format.Language
+    value: 'Cpp'
+  - key: clang-format.BasedOnStyle
+    value: 'Google'
+  - key: clang-format.IndentWidth
+    value: '2'
+  - key: clang-format.IndentPPDirectives
+    value: 'AfterHash'
+  - key: clang-format.AccessModifierOffset
+    value: '-4'
+  - key: clang-format.AlwaysBreakBeforeMultilineStrings
+    value: 'true'
+  - key: clang-format.AlwaysBreakTemplateDeclarations
+    value: 'true'
+  - key: clang-format.NamespaceIndentation
+    value: 'All'
+  - key: clang-format.IndentAccessModifiers
+    value: 'true'

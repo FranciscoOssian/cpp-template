@@ -1,0 +1,9 @@
+Language: Cpp
+BasedOnStyle: Google
+IndentWidth: 2
+IndentPPDirectives: AfterHash
+AccessModifierOffset: -4
+AlwaysBreakBeforeMultilineStrings: true
+AlwaysBreakTemplateDeclarations: true
+NamespaceIndentation: All
+IndentAccessModifiers: true

@@ -1,0 +1,15 @@
+# Premake
+/.premake/*
+!/.premake/getPreMake.sh
+!/.premake/getPreMake.dat
+
+# Project OutPuts
+/build
+!/build/.gitkeep
+
+# Vendor
+/vendor/*
+!/vendor/eigen/get.sh
+!/vendor/eigen/get.dat
+!/vendor/viennaCL/get.sh
+!/vendor/viennaCL/get.dat
