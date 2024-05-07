@@ -8,7 +8,7 @@
 !/build/.gitkeep
 
 # Vendor
-/vendor/*
+/vendor/*/*
 !/vendor/eigen/get.sh
 !/vendor/eigen/get.dat
 !/vendor/viennaCL/get.sh
