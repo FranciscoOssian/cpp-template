@@ -9,7 +9,9 @@ project "MeuProjeto"
     objdir "build/obj/%{cfg.buildcfg}"
 
     files { "src/*.cpp", "include/*.hpp" }
-    includedirs { "include", "vendor/*" }
+    includedirs { "include", "vendor/eigen", "vendor/viennaCL", "vendor/viennaCL/CL" }
+
+    defines { "VIENNACL_WITH_OPENCL" }
 
     filter "configurations:Debug"
         symbols "On"
@@ -20,3 +22,5 @@ project "MeuProjeto"
         optimize "On"
 
     filter {}
+
+    links { "OpenCL" }
