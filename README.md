@@ -36,3 +36,9 @@ cpp-template@machine:~/repos/cpp-template$ tree -L 2
     ├── premake.lua
     └── viennaCL
 ```
+
+# How to use and create vendor modules
+
+Check the `premake.lua` file to understand how to import a module, but by default, all modules are being called in the `premake.lua`, so you just need to remove the module you won't use.
+
+If you add another module to your project, I recommend following the same pattern. It's not common, but it helps with organization. Each module within the vendor directory has a `premake.lua` that declares a function to update the main premake file to handle that module (library/module). Currently, this pattern is working for simpler libraries, but it should also work for more complex ones. For example, if you need to define separate compilations.
