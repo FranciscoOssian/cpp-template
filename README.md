@@ -9,7 +9,7 @@ C++ template/boirplate
 # Steps
 
 1. Clone
-2. (**optional**)run `./.premake/getPreMake.(sh|dat)` for download and install Premake in this folder
+2. (**optional**) dont have premake and dont want install globally ? run `./.premake/getPreMake.(sh|dat)` for download and install Premake in this folder.
 3. Premake this project: `./.premake/premake5 --file=premake.lua (vs2013|gmake|...)`, all generetade files will place in `build`, visual studio project, gmake.
 4. If you choose gmake:
    1. go to `build`
@@ -18,17 +18,21 @@ C++ template/boirplate
    4. and run exec file, eg: `./$(ls | head -n 1)`
 
 ```bash
-cpp-template@machine:~/repos/cpp-template$ tree
+cpp-template@machine:~/repos/cpp-template$ tree -L 2
 .
 ├── build
 ├── cr.sh
 ├── include
 │   └── test.hpp
-├── lib
 ├── premake.lua
 ├── README.md
 ├── src
 │   ├── main.cpp
 │   └── test.cpp
 └── vendor
+    ├── eigen
+    ├── glad
+    ├── glfw
+    ├── premake.lua
+    └── viennaCL
 ```
