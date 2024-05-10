@@ -9,7 +9,9 @@
 
 # Vendor
 /vendor/*/*
-!/vendor/eigen/get.sh
-!/vendor/eigen/get.dat
-!/vendor/viennaCL/get.sh
-!/vendor/viennaCL/get.dat
+# Vendor Exception
+!/vendor/*/get.sh
+!/vendor/*/get.dat
+!/vendor/*/premake.lua
+# Vendor Exception - GLAD
+!/vendor/glad/README.md

@@ -1,13 +1,14 @@
 {
-    "configurations": [
-        {
-            "name": "anything",
-            "includePath": [
-                "${workspaceFolder}/**",
-                "${workspaceFolder}/include",
-                "${workspaceFolder}/vendor/**"
-            ]
-        }
-    ],
-    "version": 4
+  "configurations": [
+    {
+      "name": "anything",
+      "includePath": [
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/include",
+        "${workspaceFolder}/vendor/**/**",
+        "${workspaceFolder}/vendor/*/include"
+      ]
+    }
+  ],
+  "version": 4
 }

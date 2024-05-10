@@ -5,8 +5,10 @@
 #include <string>
 #include <vector>
 #include <viennacl/matrix.hpp>
+#include <glad/gl.h>
 
 int main() {
+
   std::cout << "init" << std::endl;
 
   const int size = 1500;  // Size of the matrices

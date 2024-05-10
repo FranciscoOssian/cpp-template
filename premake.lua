@@ -1,3 +1,7 @@
+#!./.premake/premake5
+
+dofile "vendor/premake.lua"
+
 workspace "MeuProjeto"
     configurations { "Debug", "Release" }
     location "build"
@@ -9,10 +13,8 @@ project "MeuProjeto"
     objdir "build/obj/%{cfg.buildcfg}"
 
     files { "src/*.cpp", "include/*.hpp" }
-    includedirs { "include", "vendor/eigen", "vendor/viennaCL", "vendor/viennaCL/CL" }
-
-    defines { "VIENNACL_WITH_OPENCL" }
-
+    includedirs { "include" }
+    
     filter "configurations:Debug"
         symbols "On"
         optimize "Off"
@@ -23,4 +25,7 @@ project "MeuProjeto"
 
     filter {}
 
-    links { "OpenCL" }
+    useEigen()
+    useViennaCL()
+    useGlad()
+    useGLFW()
