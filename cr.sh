@@ -1,4 +1,4 @@
-rm -r build
+find build -type f ! -name '.gitkeep' -exec rm {} +
 
 ./.premake/premake5 --file=premake.lua gmake
 

@@ -4,7 +4,7 @@
 !/.premake/getPreMake.dat
 
 # Project OutPuts
-/build
+/build/*
 !/build/.gitkeep
 
 # Vendor
