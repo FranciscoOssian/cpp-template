@@ -1,5 +1,3 @@
-#!./.premake/premake5
-
 dofile "vendor/premake.lua"
 
 workspace "MeuProjeto"
