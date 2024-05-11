@@ -9,7 +9,7 @@ C++ template/boirplate
 # Steps
 
 1. Clone
-2. (**optional**) dont have premake and dont want install globally ? run `./.premake/getPreMake.(sh|dat)` for download and install Premake in this folder.
+2. (**optional**) dont have premake and dont want install globally ? run `./.premake/getPreMake.(sh|bat)` for download and install Premake in this folder.
 3. Premake this project: `./.premake/premake5 --file=premake.lua (vs2013|gmake|...)`, all generetade files will place in `build`, visual studio project, gmake.
 4. If you choose gmake:
    1. go to `build`

@@ -1,7 +1,7 @@
 # Premake
 /.premake/*
 !/.premake/getPreMake.sh
-!/.premake/getPreMake.dat
+!/.premake/getPreMake.bat
 
 # Project OutPuts
 /build
