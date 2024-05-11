@@ -42,3 +42,7 @@ cpp-template@machine:~/repos/cpp-template$ tree -L 2
 Check the `premake.lua` file to understand how to import a module, but by default, all modules are being called in the `premake.lua`, so you just need to remove the module you won't use.
 
 If you add another module to your project, I recommend following the same pattern. It's not common, but it helps with organization. Each module within the vendor directory has a `premake.lua` that declares a function to update the main premake file to handle that module (library/module). Currently, this pattern is working for simpler libraries, but it should also work for more complex ones. For example, if you need to define separate compilations.
+
+# Installing vendor modules
+
+Some modules inside the vendor directory come with `get.sh` and `get.bat` scripts used for installation (downloading and extraction). These scripts should be executed from the root project directory since they are not configured to know exactly where to install. Feel free to explore these files to better understand their functionality.

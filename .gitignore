@@ -10,7 +10,7 @@
 /vendor/*/*
 # Vendor Exception
 !/vendor/*/get.sh
-!/vendor/*/get.dat
+!/vendor/*/get.bat
 !/vendor/*/premake.lua
 # Vendor Exception - GLAD
 !/vendor/glad/README.md
