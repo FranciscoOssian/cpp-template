@@ -3,6 +3,7 @@
     {
       "name": "anything",
       "includePath": [
+        "/usr/include",
         "${workspaceFolder}/**",
         "${workspaceFolder}/include",
         "${workspaceFolder}/vendor/**/**",

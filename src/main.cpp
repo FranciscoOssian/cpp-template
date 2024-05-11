@@ -1,92 +1,108 @@
-#include <Eigen/Dense>
-#include <chrono>
-#include <fstream>
 #include <iostream>
-#include <string>
-#include <vector>
-#include <viennacl/matrix.hpp>
-#include <glad/gl.h>
+#include <viennacl/vector.hpp>
+#include <GLFW/glfw3.h>
+#include <GL/gl.h>
+#include <cmath>
+#include <chrono>
+
+const int windowWidth = 800;
+const int windowHeight = 600;
+const int numPoints = 100; // Number of points in each vector
+
+// Function to initialize the OpenGL context
+void initOpenGL() {
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set the background color
+    glPointSize(5.0f); // Set the point size
+}
+
+// Function to render the points of the vectors
+void renderPoints(GLFWwindow* window, const viennacl::vector<float>& v, const viennacl::vector<float>& w, float time) {
+    // Clear the color buffer
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    // Set the color of the points of the first vector to red
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glBegin(GL_POINTS);
+    for (int i = 0; i < numPoints; ++i) {
+        glVertex2f(v[i], sin(v[i] * 10.0f + time) * 0.1f); // Alter the y coordinate of the points
+    }
+    glEnd();
+
+    // Set the color of the points of the second vector to blue
+    glColor3f(0.0f, 0.0f, 1.0f);
+    glBegin(GL_POINTS);
+    for (int i = 0; i < numPoints; ++i) {
+        glVertex2f(w[i], cos(w[i] * 10.0f + time) * 0.1f); // Alter the y coordinate of the points
+    }
+    glEnd();
+
+    // Connect the points of the vectors with lines
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glBegin(GL_LINES);
+    for (int i = 0; i < numPoints; ++i) {
+        glVertex2f(v[i], sin(v[i] * 10.0f + time) * 0.1f);
+        glVertex2f(w[i], cos(w[i] * 10.0f + time) * 0.1f);
+    }
+    glEnd();
+
+    // Swap the buffers
+    glfwSwapBuffers(window);
+}
+
+// Function to animate the points
+void animatePoints(viennacl::vector<float>& v, viennacl::vector<float>& w, float time) {
+    // Update the position of the points over time
+    for (int i = 0; i < numPoints; ++i) {
+        v[i] = static_cast<float>(i) / numPoints * 2.0f - 1.0f; // Distribute the points along the x-axis
+        w[i] = static_cast<float>(i) / numPoints * 2.0f - 1.0f; // Distribute the points along the x-axis
+    }
+}
 
 int main() {
-
-  std::cout << "init" << std::endl;
-
-  const int size = 1500;  // Size of the matrices
-  std::string fileName1 = "./list1.txt";
-  std::string fileName2 = "./list2.txt";
-
-  // Creating two large matrices using ViennaCL
-  viennacl::matrix<float> matrix1_viennacl(size, size);
-  viennacl::matrix<float> matrix2_viennacl(size, size);
-
-  // Creating two large matrices using Eigen
-  Eigen::MatrixXf matrix1_eigen(size, size);
-  Eigen::MatrixXf matrix2_eigen(size, size);
-
-  // Initializing the matrices with random values
-  for (int i = 0; i < size; ++i) {
-    for (int j = 0; j < size; ++j) {
-      matrix1_viennacl(i, j) = rand() / static_cast<float>(RAND_MAX);
-      matrix2_viennacl(i, j) = rand() / static_cast<float>(RAND_MAX);
+    // GLFW initialization
+    if (!glfwInit()) {
+        std::cerr << "Error initializing GLFW" << std::endl;
+        return -1;
     }
-  }
 
-  // Initializing the matrices with the same random values
-  for (int i = 0; i < size; ++i) {
-    for (int j = 0; j < size; ++j) {
-      matrix1_eigen(i, j) = matrix1_viennacl(i, j);
-      matrix2_eigen(i, j) = matrix2_viennacl(i, j);
+    // Create GLFW window
+    GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "ViennaCL and GLFW", NULL, NULL);
+    if (!window) {
+        std::cerr << "Error creating GLFW window" << std::endl;
+        glfwTerminate();
+        return -1;
     }
-  }
 
-  //==============================================================
+    // Set the OpenGL context of the window
+    glfwMakeContextCurrent(window);
 
-  // Performing computation with the matrices using ViennaCL and
-  // measuring the execution time
-  auto start_viennacl = std::chrono::steady_clock::now();
-  viennacl::matrix<float> result_viennacl =
-      viennacl::linalg::prod(matrix1_viennacl, matrix2_viennacl);
-  auto end_viennacl = std::chrono::steady_clock::now();
-  std::chrono::duration<double> time_viennacl = end_viennacl - start_viennacl;
+    // ViennaCL initialization
+    viennacl::vector<float> v(numPoints);
+    viennacl::vector<float> w(numPoints);
+    viennacl::vector<float> result(numPoints);
 
-  std::ofstream file1(fileName1);
-  if (!file1.is_open()) {
-    std::cout << "Err file 1" << std::endl;
-    return 1;
-  }
-  for (int i = 0; i < size; ++i) {
-    for (int j = 0; j < size; ++j) {
-      file1 << result_viennacl(i, j) << std::endl;
+    // Initialize the OpenGL context
+    initOpenGL();
+
+    // Main loop
+    auto startTime = std::chrono::high_resolution_clock::now();
+    while (!glfwWindowShouldClose(window)) {
+        // Calculate the time since the start of execution
+        auto currentTime = std::chrono::high_resolution_clock::now();
+        float time = std::chrono::duration_cast<std::chrono::duration<float>>(currentTime - startTime).count();
+
+        // Animate the points
+        animatePoints(v, w, time);
+
+        // Render the points of the vectors
+        renderPoints(window, v, w, time);
+
+        // Check and handle events
+        glfwPollEvents();
     }
-  }
 
-  // Printing the execution time with ViennaCL
-  std::cout << "Execution time with ViennaCL: " << time_viennacl.count()
-            << " seconds" << std::endl;
+    // Terminate GLFW
+    glfwTerminate();
 
-  //=================================================================
-
-  // Performing computation with the matrices using Eigen and
-  // measuring the execution time
-  auto start_eigen = std::chrono::steady_clock::now();
-  Eigen::MatrixXf result_eigen = matrix1_eigen * matrix2_eigen;
-  auto end_eigen = std::chrono::steady_clock::now();
-  std::chrono::duration<double> time_eigen = end_eigen - start_eigen;
-
-  std::ofstream file2(fileName2);
-  if (!file2.is_open()) {
-    std::cout << "Err file 2" << std::endl;
-    return 1;
-  }
-  for (int i = 0; i < size; ++i) {
-    for (int j = 0; j < size; ++j) {
-      file2 << result_eigen(i, j) << std::endl;
-    }
-  }
-
-  // Printing the execution time with Eigen
-  std::cout << "Execution time with Eigen: " << time_eigen.count() << " seconds"
-            << std::endl;
-
-  return 0;
+    return 0;
 }
