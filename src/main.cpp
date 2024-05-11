@@ -4,10 +4,30 @@
 #include <GL/gl.h>
 #include <cmath>
 #include <chrono>
+#include <boost/accumulators/accumulators.hpp>
+#include <boost/accumulators/statistics.hpp>
 
 const int windowWidth = 800;
 const int windowHeight = 600;
 const int numPoints = 100; // Number of points in each vector
+
+namespace acc = boost::accumulators;
+
+// Function that uses the Boost Accumulators library
+void useAccumulator() {
+    // Define an accumulator to calculate the mean
+    acc::accumulator_set<double, acc::stats<acc::tag::mean>> acc;
+
+    // Add some values to the accumulator
+    acc(1.2);
+    acc(2.4);
+    acc(3.6);
+
+    // Calculate and print the mean
+    // Calculate and print the mean
+    std::cout << "Mean: " << acc::mean(acc) << std::endl;
+
+}
 
 // Function to initialize the OpenGL context
 void initOpenGL() {
@@ -64,6 +84,9 @@ int main() {
         std::cerr << "Error initializing GLFW" << std::endl;
         return -1;
     }
+
+    // Call the function that uses the accumulator
+    useAccumulator();
 
     // Create GLFW window
     GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "ViennaCL and GLFW", NULL, NULL);

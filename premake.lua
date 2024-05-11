@@ -27,3 +27,4 @@ project "MeuProjeto"
     useViennaCL()
     useGlad()
     useGLFW()
+    useBoost('accumulators')
