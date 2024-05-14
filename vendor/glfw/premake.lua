@@ -8,4 +8,6 @@ function useGLFW()
 
     filter { "system:windows" } -- not tested
         links { "glfw3", "opengl32" }
+    
+    filter {}
 end

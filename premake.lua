@@ -4,6 +4,10 @@ workspace "MeuProjeto"
     configurations { "Debug", "Release" }
     location "build"
 
+project "glad"
+    kind "StaticLib"
+    useGlad()
+
 project "MeuProjeto"
     kind "ConsoleApp"
     language "C++"
@@ -25,6 +29,8 @@ project "MeuProjeto"
 
     useEigen()
     useViennaCL()
-    useGlad()
+    useImGUI("opengl3", "GLFW")
     useGLFW()
     useBoost('accumulators')
+
+    links { "glad" }
