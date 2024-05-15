@@ -84,9 +84,6 @@ compiler() {
     elif [[ "$mode" == "debug" ]]; then
         execute_binary Debug
     fi
-    
-    bash "$0" --compiler
-
 }
 
 # Main function to handle tmux session creation and management
@@ -118,7 +115,9 @@ case "$1" in
         done
         ;;
     --compiler)
-        compiler
+        while true; do
+            compiler
+        done
         ;;
     *)
         main
