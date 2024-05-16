@@ -58,10 +58,12 @@ get_projects() {
     done
 }
 
+MENU_MODE="release"
+MENU_MODE_TURN="debug"
 
 # Function to display the menu and handle project selection
 menu() {
-    echo "Make menu: (Release only)"
+    echo "Make menu: ($MENU_MODE only)"
     project_names=()
     get_projects
 
@@ -69,18 +71,35 @@ menu() {
         echo "$i - ${project_names[i]}"
     done
     echo "${#project_names[@]} - Exit"
-    echo
+    echo "$((${#project_names[@]} + 1)) - change to $MENU_MODE_TURN"
 
     read -p "Choose an option: " project_chosen
 
-    if [[ "$project_chosen" -ge "${#project_names[@]}" || "$project_chosen" -lt 0 ]]; then
+    if [[ "$project_chosen" -ge $((${#project_names[@]} + 2)) || "$project_chosen" -lt 0 ]]; then
         exit 0
     fi
 
-    clear
+    if [[ "$project_chosen" -eq "" ]]; then
+        local T="$MENU_MODE"
+        MENU_MODE="$MENU_MODE_TURN"
+        MENU_MODE_TURN="$T"
+        return 1
+    fi
+
+    if [[ "$project_chosen" -eq $((${#project_names[@]} + 1)) ]]; then
+        local T="$MENU_MODE"
+        MENU_MODE="$MENU_MODE_TURN"
+        MENU_MODE_TURN="$T"
+        return 1
+    fi
+
     cd build || exit 1
-    make config=release "${project_names[project_chosen]}"
+    make config=$MENU_MODE "${project_names[project_chosen]}"
     cd ..
+
+    tmux send-keys -t my_session:0.0 C-c
+    sleep 2
+    tmux send-keys -t my_session:0.0 "bash $0 --compiler" C-m
 }
 
 # Function to handle compiler actions
@@ -130,12 +149,9 @@ main() {
 # Argument handling
 case "$1" in
     --menu)
-        clear
         while true; do
+            clear
             menu
-            tmux send-keys -t my_session:0.0 C-c
-            sleep 2
-            tmux send-keys -t my_session:0.0 "bash $0 --compiler" C-m
         done
         ;;
     --compiler)
