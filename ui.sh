@@ -30,6 +30,8 @@ declare -a project_names
 
 # Function to get project names from premake.lua
 get_projects() {
+    project_names=()
+
     local FILE="premake.lua"
 
     if [[ ! -f "$FILE" ]]; then
@@ -37,12 +39,25 @@ get_projects() {
         exit 1
     fi
 
+    local -a TEMP_PROJECTS=()
+    local -a TEMP_KINDS=()
+
     while IFS= read -r line; do
         if [[ $line =~ project\ \"([^\"]+)\" ]]; then
-            project_names+=("${BASH_REMATCH[1]}")
+            TEMP_PROJECTS+=("${BASH_REMATCH[1]}")
+        fi
+        if [[ $line =~ kind\ \"([^\"]+)\" ]]; then
+            TEMP_KINDS+=("${BASH_REMATCH[1]}")
         fi
     done < "$FILE"
+
+    for ((i=0; i<${#TEMP_PROJECTS[@]}; i++)); do
+        if [[ "${TEMP_KINDS[i]}" != "None" ]]; then
+            project_names+=("${TEMP_PROJECTS[i]}")
+        fi
+    done
 }
+
 
 # Function to display the menu and handle project selection
 menu() {
@@ -71,14 +86,23 @@ menu() {
 # Function to handle compiler actions
 compiler() {
     clear
-    read -p "Enter mode (release/debug): " mode
-    ./.premake/premake5 --file=premake.lua gmake
-    cd build || exit 1
-    make config="$mode" all
-    cd ..
-    get_projects
-    read -p "Press any key to continue: " lllll
-
+    echo "Enter mode"
+    echo "1) Release"
+    echo "2) Debug"
+    echo "*) ---"
+    read -p "mode: " mode
+    case "$mode" in
+        1)
+            mode="release"
+            ;;
+        2)  
+            mode="debug"
+            ;;
+        *)
+            mode="all"
+            ;;
+    esac
+    
     if [[ "$mode" == "release" ]]; then
         execute_binary Release
     elif [[ "$mode" == "debug" ]]; then
